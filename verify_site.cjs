@@ -13,13 +13,13 @@ async function runVerification() {
   await page.goto('http://localhost:4173');
   await page.waitForTimeout(1000);
 
-  // 1. Screenshot Intro
+  // 1. Screenshot Intro Slide 1
   console.log('Capturing Intro screenshot...');
   await page.screenshot({ path: path.join(artifactDir, 'intro_screen.png') });
 
-  // 2. Wait for Enter button and click it
-  console.log('Waiting for Enter button...');
-  await page.waitForSelector('text=Enter Your Birthday', { timeout: 8000 });
+  // 2. Wait for Enter button (or click through slides)
+  console.log('Waiting for Enter button or advancing slides...');
+  await page.waitForSelector('text=Enter Your Birthday', { timeout: 20000 });
   await page.click('text=Enter Your Birthday');
   await page.waitForTimeout(1500);
 

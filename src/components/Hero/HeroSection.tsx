@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { BIRTHDAY_DATA } from '../../config/birthdayData';
 import { BirthdayCake } from '../Cake/BirthdayCake';
 import { Sparkles, ChevronDown, Calendar } from 'lucide-react';
@@ -11,21 +12,28 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onScrollNext }) => {
   return (
     <section 
       id="hero" 
-      className="relative min-h-[95vh] flex flex-col items-center justify-between pt-8 pb-6 px-4 text-center max-w-5xl mx-auto w-full z-10"
+      className="relative min-h-[95vh] flex flex-col items-center justify-between pt-8 pb-6 px-4 text-center max-w-5xl mx-auto w-full z-10 select-none"
     >
       {/* Top Prominent Date & Badge Block */}
-      <div className="flex flex-col items-center animate-[fadeIn_0.9s_ease-out]">
-        
+      <motion.div
+        initial={{ opacity: 0, y: 25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: 'easeOut' as const }}
+        className="flex flex-col items-center"
+      >
         {/* Date Plaque: 28 AUGUST */}
         <div className="flex flex-col items-center mb-3">
-          <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-gradient-to-r from-gold-500/15 via-rose-500/15 to-lavender-500/15 border border-gold-400/40 shadow-[0_0_20px_rgba(245,208,97,0.2)]">
-            <Calendar className="w-3.5 h-3.5 text-gold-300" />
-            <span className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-gold-200 uppercase">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-gradient-to-r from-gold-500/20 via-rose-500/20 to-lavender-500/20 border border-gold-400/50 shadow-[0_0_25px_rgba(245,208,97,0.25)]"
+          >
+            <Calendar className="w-4 h-4 text-gold-300 animate-pulse" />
+            <span className="text-xs sm:text-sm font-bold tracking-[0.25em] text-gold-200 uppercase">
               {BIRTHDAY_DATA.birthdayDate}
             </span>
-          </div>
+          </motion.div>
 
-          <div className="mt-2 text-[11px] sm:text-xs font-medium tracking-[0.3em] text-lavender-300/90 uppercase">
+          <div className="mt-2 text-[11px] sm:text-xs font-semibold tracking-[0.3em] text-lavender-300/90 uppercase">
             {BIRTHDAY_DATA.specialDayBadge}
           </div>
         </div>
@@ -40,27 +48,46 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onScrollNext }) => {
         <p className="mt-3 text-sm sm:text-base md:text-lg text-slate-300 font-light max-w-2xl mx-auto tracking-wide leading-relaxed">
           {BIRTHDAY_DATA.heroSubtitle}
         </p>
-      </div>
+      </motion.div>
 
       {/* Floating Decorative SVG Stars */}
-      <div className="absolute top-[18%] left-[4%] hidden md:block animate-float-slow pointer-events-none opacity-40">
+      <motion.div
+        animate={{ y: [-10, 10, -10], rotate: [0, 10, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-[18%] left-[4%] hidden md:block pointer-events-none opacity-40"
+      >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
           <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="#fde047" />
         </svg>
-      </div>
-      <div className="absolute top-[32%] right-[5%] hidden md:block animate-float-delayed pointer-events-none opacity-40">
+      </motion.div>
+
+      <motion.div
+        animate={{ y: [10, -10, 10], rotate: [0, -10, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+        className="absolute top-[32%] right-[5%] hidden md:block pointer-events-none opacity-40"
+      >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="#fda4af" />
         </svg>
-      </div>
+      </motion.div>
 
       {/* Cake Centerpiece */}
-      <div className="my-4 w-full flex justify-center items-center">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.3, duration: 0.9, type: 'spring', stiffness: 150 }}
+        className="my-4 w-full flex justify-center items-center"
+      >
         <BirthdayCake />
-      </div>
+      </motion.div>
 
       {/* Scroll Down Hint */}
-      <div className="flex flex-col items-center gap-1 opacity-75 hover:opacity-100 transition-opacity">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.85 }}
+        transition={{ delay: 0.8, duration: 0.8 }}
+        className="flex flex-col items-center gap-1 opacity-75 hover:opacity-100 transition-opacity"
+      >
         <button
           onClick={onScrollNext}
           className="group flex flex-col items-center text-xs text-slate-400 hover:text-gold-200 tracking-wider transition-colors cursor-pointer"
@@ -74,7 +101,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onScrollNext }) => {
             <ChevronDown className="w-3.5 h-3.5 text-gold-300 animate-bounce" />
           </div>
         </button>
-      </div>
+      </motion.div>
     </section>
   );
 };

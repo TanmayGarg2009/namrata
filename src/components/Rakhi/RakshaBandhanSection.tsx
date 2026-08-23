@@ -1,48 +1,36 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { BIRTHDAY_DATA } from '../../config/birthdayData';
 import { HeartHandshake } from 'lucide-react';
 
 export const RakshaBandhanSection: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section
-      ref={sectionRef}
       id="rakhi"
-      className="relative py-20 px-4 max-w-3xl mx-auto w-full z-10"
+      className="relative py-24 px-4 max-w-3xl mx-auto w-full z-10 select-none"
     >
-      <div
-        className={`relative rounded-3xl p-6 sm:p-10 md:p-12 bg-gradient-to-b from-midnight-900/95 via-midnight-900/80 to-midnight-950/95 border border-gold-400/30 shadow-[0_15px_45px_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-1000 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-        }`}
+      <motion.div
+        initial={{ opacity: 0, y: 35 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.25 }}
+        transition={{ duration: 0.9, ease: 'easeOut' as const }}
+        className="relative rounded-3xl p-6 sm:p-10 md:p-12 bg-gradient-to-b from-midnight-900/95 via-midnight-900/80 to-midnight-950/95 border border-gold-400/35 shadow-[0_15px_45px_rgba(0,0,0,0.6)] backdrop-blur-md"
       >
         {/* Soft Background Accents */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-gold-500/10 rounded-full blur-2xl pointer-events-none" />
 
         {/* Section Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold-500/15 border border-gold-400/30 text-gold-300 text-xs font-semibold tracking-widest uppercase mb-3">
-            <HeartHandshake className="w-3.5 h-3.5 text-gold-400" />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold-500/15 border border-gold-400/40 text-gold-200 text-xs font-semibold tracking-widest uppercase mb-3"
+          >
+            <HeartHandshake className="w-3.5 h-3.5 text-gold-300" />
             <span>{BIRTHDAY_DATA.rakshaBandhan.teaserBadge}</span>
-          </div>
+          </motion.div>
 
           <h2 className="font-serif text-2xl sm:text-3xl font-bold text-slate-100">
             {BIRTHDAY_DATA.rakshaBandhan.title}
@@ -53,15 +41,28 @@ export const RakshaBandhanSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Minimal Artisanal SVG Rakhi */}
-        <div className="my-6 flex items-center justify-center">
-          <div className="relative flex items-center justify-center w-full max-w-sm">
-            {/* Left Thread */}
-            <div className="h-[2px] flex-1 bg-gradient-to-r from-transparent via-rose-400 to-gold-400 opacity-75" />
+        {/* Minimal Artisanal Animated SVG Rakhi */}
+        <div className="my-8 flex items-center justify-center">
+          <div className="relative flex items-center justify-center w-full max-w-md">
+            {/* Left Silk Thread */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4, duration: 0.8, ease: 'easeOut' }}
+              className="h-[2.5px] flex-1 bg-gradient-to-r from-transparent via-rose-400 to-gold-400 origin-right"
+            />
 
             {/* Central Rakhi Medallion */}
-            <div className="relative mx-3 group cursor-pointer transition-transform duration-300 hover:scale-110">
-              <svg width="64" height="64" viewBox="0 0 100 100" className="drop-shadow-[0_0_12px_rgba(245,208,97,0.5)]">
+            <motion.div
+              initial={{ scale: 0, rotate: -45 }}
+              whileInView={{ scale: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, type: 'spring', stiffness: 180, damping: 14 }}
+              whileHover={{ scale: 1.12, rotate: 15 }}
+              className="relative mx-4 group cursor-pointer"
+            >
+              <svg width="72" height="72" viewBox="0 0 100 100" className="drop-shadow-[0_0_15px_rgba(245,208,97,0.6)]">
                 <defs>
                   <radialGradient id="rakhiGold" cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stop-color="#fffbeb" />
@@ -75,8 +76,8 @@ export const RakshaBandhanSection: React.FC = () => {
                   </radialGradient>
                 </defs>
 
-                {/* Outer Petals / Sunburst */}
-                <circle cx="50" cy="50" r="42" fill="none" stroke="#fde047" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.8" />
+                {/* Outer Rotating Petals / Sunburst */}
+                <circle cx="50" cy="50" r="42" fill="none" stroke="#fde047" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.85" />
                 <circle cx="50" cy="50" r="36" fill="url(#rakhiGold)" />
                 <circle cx="50" cy="50" r="28" fill="#1e1338" />
                 <circle cx="50" cy="50" r="20" fill="url(#rakhiRuby)" stroke="#fde047" stroke-width="1.5" />
@@ -94,40 +95,52 @@ export const RakshaBandhanSection: React.FC = () => {
                   <circle cx="27" cy="27" r="2" />
                 </g>
               </svg>
-            </div>
+            </motion.div>
 
-            {/* Right Thread */}
-            <div className="h-[2px] flex-1 bg-gradient-to-l from-transparent via-rose-400 to-gold-400 opacity-75" />
+            {/* Right Silk Thread */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4, duration: 0.8, ease: 'easeOut' }}
+              className="h-[2.5px] flex-1 bg-gradient-to-l from-transparent via-rose-400 to-gold-400 origin-left"
+            />
           </div>
         </div>
 
         {/* Raksha Bandhan Message */}
         <div className="space-y-4 text-center text-slate-200 font-sans text-base sm:text-lg font-light leading-relaxed">
-          <p
-            className={`font-serif text-xl sm:text-2xl font-medium text-gold-200 transition-all duration-700 delay-200 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4, duration: 0.7 }}
+            className="font-serif text-xl sm:text-2xl font-semibold text-gold-200"
           >
             {BIRTHDAY_DATA.rakshaBandhan.salutation}
-          </p>
+          </motion.p>
 
-          <p
-            className={`text-slate-300 transition-all duration-700 delay-400 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6, duration: 0.7 }}
+            className="text-slate-300"
           >
             {BIRTHDAY_DATA.rakshaBandhan.siblingJoke}
-          </p>
+          </motion.p>
 
-          <div
-            className={`pt-2 text-slate-200 italic font-serif text-base sm:text-lg transition-all duration-700 delay-600 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+            className="pt-3 text-slate-200 italic font-serif text-base sm:text-lg bg-midnight-950/60 p-4 rounded-2xl border border-gold-400/20"
           >
             "{BIRTHDAY_DATA.rakshaBandhan.brotherlyBlessing}"
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

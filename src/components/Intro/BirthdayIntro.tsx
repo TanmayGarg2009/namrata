@@ -1,120 +1,182 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { BIRTHDAY_DATA } from '../../config/birthdayData';
 import { fireLightweightConfetti } from '../../utils/confetti';
 import { soundManager } from '../../utils/audioSynthesizer';
-import { Sparkles, Calendar } from 'lucide-react';
+import { Sparkles, Calendar, ArrowRight } from 'lucide-react';
 
 interface BirthdayIntroProps {
   onEnter: () => void;
 }
 
 export const BirthdayIntro: React.FC<BirthdayIntroProps> = ({ onEnter }) => {
-  const [step, setStep] = useState<number>(0);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
   const [isExiting, setIsExiting] = useState<boolean>(false);
 
+  const slides = BIRTHDAY_DATA.introSequence;
+  const currentSlide = slides[currentSlideIndex];
+  const isLastSlide = currentSlideIndex === slides.length - 1;
+
   useEffect(() => {
-    // Step 0: Center star glowing
-    // Step 1: "Hey Namrata... ✨" (0.6s)
-    // Step 2: "28th August." (1.8s)
-    // Step 3: "The special day for you." (2.9s)
-    // Step 4: "YOUR BIRTHDAY!!! 🎂" (4.1s)
-    // Step 5: "Okay, let's celebrate." + Button "Enter Your Birthday ✨" (5.2s)
+    if (isLastSlide || currentSlide.duration === 0) return;
 
-    const timer1 = setTimeout(() => setStep(1), 600);
-    const timer2 = setTimeout(() => setStep(2), 1700);
-    const timer3 = setTimeout(() => setStep(3), 2800);
-    const timer4 = setTimeout(() => setStep(4), 3900);
-    const timer5 = setTimeout(() => setStep(5), 4900);
+    const timer = setTimeout(() => {
+      setCurrentSlideIndex((prev) => Math.min(prev + 1, slides.length - 1));
+    }, currentSlide.duration);
 
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-      clearTimeout(timer4);
-      clearTimeout(timer5);
-    };
-  }, []);
+    return () => clearTimeout(timer);
+  }, [currentSlideIndex, isLastSlide, currentSlide.duration, slides.length]);
+
+  const handleNext = () => {
+    if (isLastSlide) {
+      handleEnter();
+    } else {
+      soundManager.playSparkle();
+      setCurrentSlideIndex((prev) => prev + 1);
+    }
+  };
 
   const handleEnter = () => {
     soundManager.playSparkle();
-    fireLightweightConfetti({ particleCount: 30, origin: { x: 0.5, y: 0.55 } });
+    fireLightweightConfetti({ particleCount: 35, origin: { x: 0.5, y: 0.55 } });
     setIsExiting(true);
     setTimeout(() => {
       onEnter();
-    }, 700);
+    }, 750);
   };
 
   return (
-    <div
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-center px-4 transition-all duration-700 bg-midnight-950 ${
-        isExiting ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
-      }`}
+    <motion.div
+      initial={{ opacity: 1 }}
+      animate={{ opacity: isExiting ? 0 : 1, scale: isExiting ? 1.05 : 1 }}
+      transition={{ duration: 0.75, ease: 'easeInOut' }}
+      className="fixed inset-0 z-50 flex flex-col items-center justify-between py-12 px-4 bg-midnight-950 text-slate-100 overflow-hidden select-none"
     >
-      {/* Background Soft Glow */}
-      <div 
-        className="absolute w-72 h-72 md:w-96 md:h-96 rounded-full opacity-30 blur-3xl pointer-events-none"
-        style={{ background: 'radial-gradient(circle, #facc15 0%, #c084fc 40%, transparent 70%)' }}
+      {/* Dynamic Background Starlight Aura */}
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.25, 0.4, 0.25],
+        }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 sm:w-[500px] sm:h-[500px] rounded-full blur-[100px] pointer-events-none"
+        style={{
+          background:
+            currentSlideIndex === 1
+              ? 'radial-gradient(circle, #f59e0b 0%, #7c3aed 50%, transparent 70%)'
+              : currentSlideIndex === 2
+              ? 'radial-gradient(circle, #fde047 0%, #ec4899 50%, transparent 70%)'
+              : 'radial-gradient(circle, #c084fc 0%, #3b82f6 50%, transparent 70%)',
+        }}
       />
 
-      {/* Center glowing spark */}
-      <div className="relative mb-6 flex items-center justify-center">
-        <div className="w-3 h-3 rounded-full bg-gold-200 shadow-[0_0_20px_#fde047,0_0_40px_#f59e0b] animate-pulse-glow" />
-        <div className="absolute w-8 h-8 rounded-full border border-gold-300/30 animate-ping opacity-40" />
+      {/* Top Brand Monogram */}
+      <div className="relative z-10 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="w-10 h-10 rounded-full bg-midnight-900 border border-gold-400/30 flex items-center justify-center shadow-[0_0_15px_rgba(245,208,97,0.2)]"
+        >
+          <span className="font-serif font-bold text-gold-300 text-base">N</span>
+        </motion.div>
       </div>
 
-      {/* Cinematic Text Sequence */}
-      <div className="text-center max-w-lg mx-auto flex flex-col items-center justify-center min-h-[220px] space-y-3.5">
-        {step >= 1 && (
-          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-slate-100 tracking-wide animate-[fadeIn_0.7s_ease-out]">
-            {BIRTHDAY_DATA.introSequence.greeting}
-          </h2>
-        )}
+      {/* Center Cinematic Slide Container */}
+      <div className="relative z-10 max-w-xl mx-auto w-full text-center min-h-[260px] flex flex-col items-center justify-center">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSlide.id}
+            initial={{ opacity: 0, y: 24, filter: 'blur(8px)', scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
+            exit={{ opacity: 0, y: -20, filter: 'blur(6px)', scale: 1.02 }}
+            transition={{ duration: 0.85, ease: 'easeOut' as const }}
+            className="space-y-4 px-2"
+          >
+            {/* Optional Top Badge for Date slide */}
+            {currentSlide.badge && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/15 border border-gold-400/40 text-gold-200 text-xs font-semibold tracking-[0.2em] shadow-sm mb-1"
+              >
+                <Calendar className="w-3.5 h-3.5 text-gold-300" />
+                <span>{currentSlide.badge}</span>
+              </motion.div>
+            )}
 
-        {step >= 2 && (
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold-500/15 border border-gold-400/30 text-gold-300 text-sm font-semibold tracking-wider animate-[fadeIn_0.7s_ease-out]">
-            <Calendar className="w-3.5 h-3.5 text-gold-300" />
-            <span>{BIRTHDAY_DATA.introSequence.date}</span>
-          </div>
-        )}
+            {/* Main Title Phrase */}
+            <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl font-extrabold gold-gradient-text tracking-tight leading-[1.15]">
+              {currentSlide.text}
+            </h2>
 
-        {step >= 3 && (
-          <p className="text-lavender-200 text-base sm:text-lg font-light tracking-wide animate-[fadeIn_0.7s_ease-out]">
-            {BIRTHDAY_DATA.introSequence.special}
-          </p>
-        )}
-
-        {step >= 4 && (
-          <h3 className="font-serif text-2xl sm:text-4xl font-bold gold-gradient-text tracking-tight animate-[fadeIn_0.7s_ease-out]">
-            {BIRTHDAY_DATA.introSequence.birthday}
-          </h3>
-        )}
-
-        {step >= 5 && (
-          <div className="pt-3 flex flex-col items-center gap-4 animate-[fadeIn_0.7s_ease-out]">
-            <p className="text-slate-300 text-sm italic font-light">
-              "{BIRTHDAY_DATA.introSequence.celebrate}"
+            {/* Subtitle / Description */}
+            <p className="text-slate-300 text-sm sm:text-base md:text-lg font-light tracking-wide max-w-md mx-auto leading-relaxed">
+              {currentSlide.subtitle}
             </p>
+
+            {/* Final Slide Button */}
+            {isLastSlide && (
+              <motion.div
+                initial={{ opacity: 0, y: 15, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="pt-6"
+              >
+                <button
+                  onClick={handleEnter}
+                  className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-gold-500/25 via-rose-500/20 to-lavender-500/25 hover:from-gold-500/35 hover:to-lavender-500/35 border border-gold-300/60 hover:border-gold-300 text-gold-100 font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-[0_0_30px_rgba(245,208,97,0.3)] hover:shadow-[0_0_40px_rgba(245,208,97,0.5)] cursor-pointer"
+                  aria-label="Enter your birthday celebration"
+                >
+                  <Sparkles className="w-5 h-5 text-gold-300 group-hover:rotate-12 transition-transform duration-300" />
+                  <span>{currentSlide.buttonText}</span>
+                </button>
+              </motion.div>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Bottom Controls & Progress Dots */}
+      <div className="relative z-10 flex flex-col items-center gap-4 w-full max-w-xs">
+        {/* Progress Step Indicators */}
+        <div className="flex items-center gap-2" aria-label="Intro progress">
+          {slides.map((slide, idx) => (
+            <button
+              key={slide.id}
+              onClick={() => setCurrentSlideIndex(idx)}
+              className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
+                idx === currentSlideIndex
+                  ? 'w-8 bg-gold-300 shadow-[0_0_8px_#fde047]'
+                  : idx < currentSlideIndex
+                  ? 'w-3 bg-gold-500/50'
+                  : 'w-2 bg-slate-700'
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* Manual Next / Skip Navigation */}
+        {!isLastSlide && (
+          <div className="flex items-center justify-between w-full text-xs text-slate-400 px-4">
             <button
               onClick={handleEnter}
-              className="group relative inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-gradient-to-r from-gold-500/20 via-rose-500/20 to-lavender-500/20 hover:from-gold-500/30 hover:to-lavender-500/30 border border-gold-300/50 hover:border-gold-300 text-gold-100 font-medium text-base md:text-lg transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-[0_0_25px_rgba(245,208,97,0.25)] hover:shadow-[0_0_35px_rgba(245,208,97,0.45)] cursor-pointer"
-              aria-label="Enter your birthday celebration"
+              className="hover:text-slate-200 tracking-wider transition-colors cursor-pointer py-1"
             >
-              <Sparkles className="w-5 h-5 text-gold-300 group-hover:rotate-12 transition-transform duration-300" />
-              <span>{BIRTHDAY_DATA.introSequence.buttonText}</span>
+              Skip Intro
+            </button>
+            <button
+              onClick={handleNext}
+              className="inline-flex items-center gap-1 text-gold-300 hover:text-gold-200 font-medium tracking-wider transition-colors cursor-pointer py-1"
+            >
+              <span>Next</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
         )}
       </div>
-
-      {/* Skip Button */}
-      {step < 5 && (
-        <button
-          onClick={handleEnter}
-          className="absolute bottom-8 text-xs text-slate-500 hover:text-slate-300 transition-colors uppercase tracking-widest cursor-pointer px-4 py-2"
-        >
-          Skip Intro →
-        </button>
-      )}
-    </div>
+    </motion.div>
   );
 };

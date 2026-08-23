@@ -3,8 +3,10 @@ export interface AdmireCard {
   iconName: 'Sparkles' | 'Compass' | 'Shield' | 'Flame' | 'Star' | 'Target';
   title: string;
   subtitle: string;
+  detailedNote: string;
   gradient: string;
   iconColor: string;
+  borderColor: string;
 }
 
 export const BIRTHDAY_DATA = {
@@ -17,22 +19,43 @@ export const BIRTHDAY_DATA = {
   heroHeading: "YOUR BIRTHDAY! 🎂",
   heroSubtitle: "Hope this year brings you plenty of reasons to smile, good memories, good people, and a lot of moments worth remembering.",
 
-  introSequence: {
-    greeting: "Hey Namrata... ✨",
-    date: "28th August.",
-    special: "The special day for you.",
-    birthday: "YOUR BIRTHDAY!!! 🎂",
-    celebrate: "Okay, let's celebrate.",
-    buttonText: "Enter Your Birthday ✨",
-  },
+  introSequence: [
+    {
+      id: "greeting",
+      text: "Hey Namrata... ✨",
+      subtitle: "Take a deep breath and relax for a moment.",
+      duration: 3200,
+    },
+    {
+      id: "date",
+      text: "28th August.",
+      subtitle: "The special day for you.",
+      badge: "28 AUGUST 2026",
+      duration: 3500,
+    },
+    {
+      id: "birthday",
+      text: "YOUR BIRTHDAY! 🎂",
+      subtitle: "And yes... someone built a whole interactive website for you.",
+      duration: 3500,
+    },
+    {
+      id: "ready",
+      text: "Okay, let's celebrate.",
+      subtitle: "Click below to step inside.",
+      buttonText: "Enter Your Birthday ✨",
+      duration: 0,
+    }
+  ],
 
   personalMemory: {
+    badge: "A GENUINE SIBLING MEMORY",
     sectionTitle: "Okay, something I remember...",
     jokeSetup: "The first time I saw you, I genuinely thought you were an",
     jokeHighlight: "Ichchadhari Naagin 🐍",
     jokeReaction: "Ehmm... yeah.",
     jokeAdmit: "Maybe I was slightly wrong about that.",
-    transition: "But honestly, there's a lot about you that I admire."
+    transition: "Growing up together, there are so many funny, chaotic, and memorable moments. But honestly, there's a lot about you that I genuinely admire."
   },
 
   thingsIAdmire: [
@@ -41,48 +64,60 @@ export const BIRTHDAY_DATA = {
       iconName: "Sparkles",
       title: "Your Confidence",
       subtitle: "The natural ease with which you carry yourself in any room.",
+      detailedNote: "You don't second-guess who you are. That quiet self-assurance is something really special.",
       gradient: "from-amber-500/20 via-gold-500/10 to-transparent",
       iconColor: "text-gold-400",
+      borderColor: "hover:border-gold-400/50"
     },
     {
       id: "own-way",
       iconName: "Compass",
       title: "Doing Things Your Own Way",
       subtitle: "Never following the herd, always trusting your own instincts.",
+      detailedNote: "You make your own rules and follow your own compass without caring about what everyone else is doing.",
       gradient: "from-blue-500/20 via-cyan-500/10 to-transparent",
       iconColor: "text-cyan-300",
+      borderColor: "hover:border-cyan-400/50"
     },
     {
       id: "stand-out",
       iconName: "Star",
       title: "Standing Out Without Trying",
       subtitle: "An effortless presence that speaks for itself.",
+      detailedNote: "You don't have to try hard to make an impression; your personality naturally commands attention.",
       gradient: "from-lavender-500/20 via-indigo-500/10 to-transparent",
       iconColor: "text-lavender-300",
+      borderColor: "hover:border-lavender-400/50"
     },
     {
       id: "personality",
       iconName: "Flame",
       title: "Your Personality",
       subtitle: "Sharp, spirited, and impossible to mistake for anyone else.",
+      detailedNote: "Direct, witty, honest, and 100% authentic. There's nobody quite like you.",
       gradient: "from-rose-500/20 via-pink-500/10 to-transparent",
       iconColor: "text-rose-400",
+      borderColor: "hover:border-rose-400/50"
     },
     {
       id: "strength",
       iconName: "Shield",
       title: "Your Strength",
       subtitle: "Resilient and grounded, facing every challenge head-on.",
+      detailedNote: "Whatever happens, you hold your ground and figure things out with calm dignity.",
       gradient: "from-emerald-500/20 via-teal-500/10 to-transparent",
       iconColor: "text-emerald-300",
+      borderColor: "hover:border-emerald-400/50"
     },
     {
       id: "determination",
       iconName: "Target",
       title: "Your Determination",
       subtitle: "The focus you put in when you set your mind on something.",
+      detailedNote: "When you lock onto a goal or a project, you see it all the way through to the end.",
       gradient: "from-peach-300/20 via-amber-400/10 to-transparent",
       iconColor: "text-peach-200",
+      borderColor: "hover:border-peach-400/50"
     }
   ] as AdmireCard[],
 
@@ -91,7 +126,8 @@ export const BIRTHDAY_DATA = {
     subtitle: "Make a wish. ✨",
     prompt: "Tap the candle flame to seal your wish into the stars.",
     wishedText1: "Wish made. ✨",
-    wishedText2: "Now let's hope the universe is listening."
+    wishedText2: "Now let's hope the universe is listening.",
+    brotherlyNote: "Keep dreaming big, working hard, and making great things happen."
   },
 
   secretSurprise: {
@@ -100,7 +136,7 @@ export const BIRTHDAY_DATA = {
     buttonText: "Open Note ✉️",
     openedBadge: "JUST SO YOU KNOW",
     mainMessage: "Yes, this whole website is for you.",
-    secondaryMessage: "28th August wasn't going to pass unnoticed. Now go enjoy your day."
+    secondaryMessage: "28th August wasn't going to pass unnoticed. Now go enjoy your day and have the best birthday! ✨"
   },
 
   rakshaBandhan: {

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { BIRTHDAY_DATA } from '../../config/birthdayData';
 import { soundManager } from '../../utils/audioSynthesizer';
 import { fireLightweightConfetti } from '../../utils/confetti';
@@ -21,9 +22,15 @@ export const MakeAWish: React.FC = () => {
   };
 
   return (
-    <section id="wish" className="relative py-20 px-4 max-w-4xl mx-auto w-full text-center z-10">
+    <section id="wish" className="relative py-20 px-4 max-w-4xl mx-auto w-full text-center z-10 select-none">
       {/* Title */}
-      <div className="mb-8">
+      <motion.div
+        initial={{ opacity: 0, y: 25 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8 }}
+        className="mb-8"
+      >
         <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-gold-500/10 border border-gold-400/30 text-gold-300 text-xs font-semibold tracking-widest uppercase mb-2">
           <Wand2 className="w-3.5 h-3.5" />
           <span>{BIRTHDAY_DATA.makeAWish.title}</span>
@@ -34,17 +41,18 @@ export const MakeAWish: React.FC = () => {
         <p className="mt-2 text-slate-300 text-sm sm:text-base max-w-md mx-auto font-light">
           {BIRTHDAY_DATA.makeAWish.prompt}
         </p>
-      </div>
+      </motion.div>
 
       {/* Center Interactive Wish Altar */}
       <div className="relative flex flex-col items-center justify-center my-4">
         {/* Radiant Aurora Ring when wished */}
-        <div
-          className={`absolute rounded-full transition-all duration-1000 pointer-events-none ${
-            isWarping || hasWished
-              ? 'w-72 h-72 sm:w-96 sm:h-96 opacity-40 bg-gradient-to-r from-gold-400/40 via-rose-400/30 to-lavender-400/40 blur-3xl scale-125'
-              : 'w-48 h-48 opacity-20 bg-gold-500/20 blur-2xl scale-100'
-          }`}
+        <motion.div
+          animate={{
+            scale: hasWished ? [1, 1.25, 1.15] : 1,
+            opacity: hasWished ? [0.2, 0.45, 0.35] : 0.2,
+          }}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
+          className="absolute rounded-full w-64 h-64 sm:w-88 sm:h-88 bg-gradient-to-r from-gold-400/40 via-rose-400/30 to-lavender-400/40 blur-3xl pointer-events-none"
         />
 
         {/* Upward rising stardust particles when wished */}
@@ -58,9 +66,12 @@ export const MakeAWish: React.FC = () => {
         )}
 
         {/* Large Grand Golden Wish Candle */}
-        <button
+        <motion.button
+          type="button"
           onClick={handleMakeWish}
-          className="group relative flex flex-col items-center justify-center p-6 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 rounded-3xl"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="group relative flex flex-col items-center justify-center p-6 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 rounded-3xl"
           aria-label="Tap candle to make a birthday wish"
         >
           {/* Flame */}
@@ -110,27 +121,34 @@ export const MakeAWish: React.FC = () => {
             <Sparkles className="w-3.5 h-3.5" />
             {hasWished ? 'Wish Made ✨ (Tap again)' : 'Tap to Make a Wish ✨'}
           </span>
-        </button>
+        </motion.button>
       </div>
 
       {/* Revelation Card upon wishing */}
-      <div
-        className={`max-w-xl mx-auto mt-4 rounded-3xl p-6 sm:p-8 bg-gradient-to-b from-midnight-900/95 to-midnight-950/95 border border-gold-400/30 shadow-[0_10px_35px_rgba(245,208,97,0.15)] transition-all duration-700 ${
-          hasWished
-            ? 'opacity-100 translate-y-0 scale-100'
-            : 'opacity-0 translate-y-6 scale-95 pointer-events-none h-0 overflow-hidden p-0 m-0 border-0'
-        }`}
-      >
-        <div className="space-y-3 text-center">
-          <p className="font-serif text-xl sm:text-2xl text-gold-200 font-bold leading-relaxed">
-            "{BIRTHDAY_DATA.makeAWish.wishedText1}"
-          </p>
-          <div className="h-[1px] w-16 bg-gold-400/40 mx-auto" />
-          <p className="text-slate-300 text-sm sm:text-base font-light italic">
-            "{BIRTHDAY_DATA.makeAWish.wishedText2}"
-          </p>
-        </div>
-      </div>
+      <AnimatePresence>
+        {hasWished && (
+          <motion.div
+            initial={{ opacity: 0, y: 25, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 15, scale: 0.95 }}
+            transition={{ duration: 0.6, type: 'spring', stiffness: 200, damping: 20 }}
+            className="max-w-xl mx-auto mt-4 rounded-3xl p-6 sm:p-8 bg-gradient-to-b from-midnight-900/95 to-midnight-950/95 border border-gold-400/30 shadow-[0_10px_35px_rgba(245,208,97,0.15)]"
+          >
+            <div className="space-y-3 text-center">
+              <p className="font-serif text-xl sm:text-2xl text-gold-200 font-bold leading-relaxed">
+                "{BIRTHDAY_DATA.makeAWish.wishedText1}"
+              </p>
+              <div className="h-[1px] w-16 bg-gold-400/40 mx-auto" />
+              <p className="text-slate-300 text-sm sm:text-base font-light italic">
+                "{BIRTHDAY_DATA.makeAWish.wishedText2}"
+              </p>
+              <p className="text-xs sm:text-sm text-gold-300/80 font-light pt-1">
+                {BIRTHDAY_DATA.makeAWish.brotherlyNote}
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

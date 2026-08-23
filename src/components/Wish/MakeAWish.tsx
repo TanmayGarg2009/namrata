@@ -21,23 +21,23 @@ export const MakeAWish: React.FC = () => {
   };
 
   return (
-    <section id="wish" className="relative py-24 px-4 max-w-4xl mx-auto w-full text-center z-10">
+    <section id="wish" className="relative py-20 px-4 max-w-4xl mx-auto w-full text-center z-10">
       {/* Title */}
-      <div className="mb-10">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-400/30 text-gold-300 text-xs font-semibold tracking-widest uppercase mb-3">
+      <div className="mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-gold-500/10 border border-gold-400/30 text-gold-300 text-xs font-semibold tracking-widest uppercase mb-2">
           <Wand2 className="w-3.5 h-3.5" />
-          <span>A Cosmic Moment</span>
+          <span>{BIRTHDAY_DATA.makeAWish.title}</span>
         </div>
         <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold gold-gradient-text">
-          {BIRTHDAY_DATA.makeAWish.title}
+          {BIRTHDAY_DATA.makeAWish.subtitle}
         </h2>
-        <p className="mt-3 text-slate-300 text-sm sm:text-base max-w-md mx-auto font-light">
+        <p className="mt-2 text-slate-300 text-sm sm:text-base max-w-md mx-auto font-light">
           {BIRTHDAY_DATA.makeAWish.prompt}
         </p>
       </div>
 
       {/* Center Interactive Wish Altar */}
-      <div className="relative flex flex-col items-center justify-center my-6">
+      <div className="relative flex flex-col items-center justify-center my-4">
         {/* Radiant Aurora Ring when wished */}
         <div
           className={`absolute rounded-full transition-all duration-1000 pointer-events-none ${
@@ -95,11 +95,11 @@ export const MakeAWish: React.FC = () => {
           {/* Candle Pillar Body */}
           <div className="w-16 h-28 sm:w-20 sm:h-36 rounded-2xl bg-gradient-to-b from-amber-100 via-gold-200 to-amber-300 border border-gold-300/60 shadow-[0_8px_20px_rgba(0,0,0,0.5)] flex flex-col items-center justify-between p-2 relative overflow-hidden">
             {/* Golden Ribbon accent */}
-            <div className="w-full h-3 bg-gradient-to-r from-rose-400 to-pink-500 rounded-sm opacity-80" />
+            <div className="w-full h-3 bg-gradient-to-r from-amber-400 to-gold-500 rounded-sm opacity-80" />
             <div className="w-6 h-6 rounded-full bg-white/40 border border-gold-400 flex items-center justify-center">
               <Star className="w-3.5 h-3.5 text-amber-700 fill-amber-700" />
             </div>
-            <div className="w-full h-3 bg-gradient-to-r from-rose-400 to-pink-500 rounded-sm opacity-80" />
+            <div className="w-full h-3 bg-gradient-to-r from-amber-400 to-gold-500 rounded-sm opacity-80" />
           </div>
 
           {/* Candle Base Plate */}
@@ -115,14 +115,14 @@ export const MakeAWish: React.FC = () => {
 
       {/* Revelation Card upon wishing */}
       <div
-        className={`max-w-xl mx-auto mt-6 rounded-3xl p-6 sm:p-8 bg-gradient-to-b from-midnight-900/95 to-midnight-950/95 border border-gold-400/30 shadow-[0_10px_35px_rgba(245,208,97,0.15)] transition-all duration-700 ${
+        className={`max-w-xl mx-auto mt-4 rounded-3xl p-6 sm:p-8 bg-gradient-to-b from-midnight-900/95 to-midnight-950/95 border border-gold-400/30 shadow-[0_10px_35px_rgba(245,208,97,0.15)] transition-all duration-700 ${
           hasWished
             ? 'opacity-100 translate-y-0 scale-100'
             : 'opacity-0 translate-y-6 scale-95 pointer-events-none h-0 overflow-hidden p-0 m-0 border-0'
         }`}
       >
-        <div className="space-y-4 text-center">
-          <p className="font-serif text-lg sm:text-2xl text-gold-200 font-medium leading-relaxed">
+        <div className="space-y-3 text-center">
+          <p className="font-serif text-xl sm:text-2xl text-gold-200 font-bold leading-relaxed">
             "{BIRTHDAY_DATA.makeAWish.wishedText1}"
           </p>
           <div className="h-[1px] w-16 bg-gold-400/40 mx-auto" />

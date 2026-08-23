@@ -1,20 +1,21 @@
-# ✨ Happy Birthday Namrata! 🎂
+# ✨ Happy Birthday Namrata! 🎂✨
 
-A luxury, performance-first, mobile-optimized digital birthday celebration website created especially for **Namrata**.
+A personalized, luxury, performance-first birthday & Raksha Bandhan celebration website created especially for **Namrata** by her brother **Tanmay**.
 
 ---
 
 ## 🌟 Key Features
 
-- **Cinematic Prologue**: *"Hey Namrata..."* sequenced greeting with glowing stardust spark and celebration entrance.
-- **Artisanal Multi-Tier SVG Cake**: Interactive candles with flame physics, individual toggles, and *"Blow Candles"* / *"Relight Candles"* actions with harmonic chimes.
-- **Scroll-Revealed Birthday Message**: Dedicated heartfelt letter section (*"For Namrata ❤️"*).
-- **Interactive "Make a Wish" Altar**: Solitary golden candle on a celestial pedestal with radiant aurora halo and cosmic affirmations upon tap.
-- **Things I Wish For You (6 Luxury Cards)**: Responsive glassmorphic cards with bespoke Lucide iconography (*Happiness, Good Health, Memories, Big Dreams, Endless Laughter, Surprises*).
-- **Interactive Wax-Sealed Surprise Envelope**: *"Wait... there's more 👀"* with an "N" monogram stamp that unseals to reveal the confidential note.
-- **Grand Finale & Confetti**: *"One last thing..."* with an interactive *"Celebrate Again 🎉"* confetti shower.
-- **Background Music Engine**: Autoplays background song (`public/song.mp3`) on repeat with smooth Mute/Unmute toggle.
-- **60 FPS Mobile Performance**: 0px horizontal overflow across all screen sizes (320px to 4K), lightweight asset footprint (10.8 kB CSS / 77.8 kB JS gzip), and reduced-motion support.
+- **28th August Spotlight**: Prominently celebrates **28th August** (*"THE SPECIAL DAY FOR YOU"*, *"YOUR BIRTHDAY! 🎂"*).
+- **Personalized Prologue**: *"Hey Namrata... ✨"* → *"28th August."* → *"The special day for you."* → *"YOUR BIRTHDAY! 🎂"* → *"Okay, let's celebrate."* → *"Enter Your Birthday ✨"*.
+- **Personal Memory Section**: *"Okay, something I remember..."* featuring the playful *"Ichchadhari Naagin 🐍"* memory with comedic brotherly timing.
+- **Things I Admire About You**: 6 genuine brotherly qualities (*Your Confidence*, *Doing Things Your Own Way*, *Standing Out Without Trying*, *Your Personality*, *Your Strength*, *Your Determination*).
+- **Interactive Artisanal SVG Cake & Candles**: Clickable candles with flame physics, individual toggles, and *"Blow Candles 🎂"* / *"Relight Candles ✨"* actions.
+- **Make a Wish**: *"Alright, Namrata... Make a wish. ✨"* → *"Wish made. ✨ Now let's hope the universe is listening."*
+- **Raksha Bandhan Double Celebration**: Minimalist SVG Rakhi with silk thread animation and heartfelt brotherly blessings for her dreams and goals.
+- **Warm Brotherly Closing**: Concludes with *"— Your Brother, Tanmay"* and *"(Hope you still think / take me as your brother. ❤️)"*.
+- **Optional Background Music**: Clean toggle for `public/song.mp3` with **Music ON 🎵** / **Music OFF** states (no unprompted autoplay).
+- **60 FPS Mobile Performance**: 0px horizontal overflow across all screen sizes (320px to 4K), lightweight asset footprint (<12 kB CSS / 78 kB JS gzip).
 
 ---
 
@@ -40,5 +41,3 @@ npm run build
 ## 🛠️ Configuration
 
 All messages, wishes, and names can be edited in [`src/config/birthdayData.ts`](./src/config/birthdayData.ts).
-
-Background music is located in [`public/song.mp3`](./public/song.mp3).

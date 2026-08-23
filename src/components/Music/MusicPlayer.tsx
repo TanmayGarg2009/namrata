@@ -3,19 +3,17 @@ import { soundManager } from '../../utils/audioSynthesizer';
 import { Volume2, VolumeX } from 'lucide-react';
 
 export const MusicPlayer: React.FC = () => {
-  const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   useEffect(() => {
-    const unsubscribe = soundManager.subscribe((muted, playing) => {
-      setIsMuted(muted);
-      setIsPlaying(playing && !muted);
+    const unsubscribe = soundManager.subscribe((playing) => {
+      setIsPlaying(playing);
     });
     return unsubscribe;
   }, []);
 
   const handleToggle = () => {
-    soundManager.toggleMute();
+    soundManager.toggleMusic();
   };
 
   return (
@@ -27,7 +25,7 @@ export const MusicPlayer: React.FC = () => {
             ? 'bg-midnight-900/90 border-gold-400/60 text-gold-200 shadow-[0_0_20px_rgba(245,208,97,0.3)] scale-105'
             : 'bg-midnight-950/85 hover:bg-midnight-900 border-white/15 text-slate-300 hover:text-white'
         }`}
-        aria-label={isMuted ? 'Unmute background song' : 'Mute background song'}
+        aria-label={isPlaying ? 'Turn background music OFF' : 'Turn background music ON'}
       >
         {isPlaying ? (
           <>
@@ -36,14 +34,14 @@ export const MusicPlayer: React.FC = () => {
               <span className="w-0.5 h-3/4 bg-gold-300 rounded-full animate-[pulse_1.1s_ease-in-out_infinite_0.2s]" />
               <span className="w-0.5 h-4/5 bg-gold-400 rounded-full animate-[pulse_0.9s_ease-in-out_infinite_0.4s]" />
             </div>
-            <span className="text-xs font-medium tracking-wide">Sound On</span>
+            <span className="text-xs font-medium tracking-wide">Music ON 🎵</span>
             <Volume2 className="w-3.5 h-3.5 text-gold-400" />
           </>
         ) : (
           <>
             <VolumeX className="w-3.5 h-3.5 text-slate-400 group-hover:text-gold-300 transition-colors" />
             <span className="text-xs font-medium tracking-wide text-slate-300 group-hover:text-slate-100">
-              Muted
+              Music OFF
             </span>
           </>
         )}

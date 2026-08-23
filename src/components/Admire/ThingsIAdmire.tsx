@@ -1,18 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { BIRTHDAY_DATA, type WishCard } from '../../config/birthdayData';
-import { Smile, Heart, Sparkles, Compass, Laugh, Gift } from 'lucide-react';
+import { BIRTHDAY_DATA, type AdmireCard } from '../../config/birthdayData';
+import { Sparkles, Compass, Shield, Flame, Star, Target } from 'lucide-react';
 import { soundManager } from '../../utils/audioSynthesizer';
 
 const iconMap = {
-  Smile,
-  Heart,
   Sparkles,
   Compass,
-  Laugh,
-  Gift,
+  Star,
+  Flame,
+  Shield,
+  Target,
 };
 
-export const ThingsIWish: React.FC = () => {
+export const ThingsIAdmire: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLElement | null>(null);
 
@@ -33,33 +33,33 @@ export const ThingsIWish: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  const handleCardClick = (_card: WishCard) => {
+  const handleCardClick = (_card: AdmireCard) => {
     soundManager.playSparkle();
   };
 
   return (
     <section
       ref={containerRef}
-      id="wishes-grid"
+      id="admire"
       className="relative py-20 px-4 max-w-6xl mx-auto w-full z-10"
     >
       {/* Section Header */}
-      <div className="text-center mb-14">
+      <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-lavender-500/10 border border-lavender-400/30 text-lavender-300 text-xs font-semibold tracking-widest uppercase mb-3">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Heartfelt Hopes</span>
+          <Star className="w-3.5 h-3.5" />
+          <span>Real & Genuine</span>
         </div>
         <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold lavender-gradient-text">
-          Things I Wish For You ✨
+          Things I Admire About You ✨
         </h2>
         <p className="mt-3 text-slate-300 text-sm sm:text-base font-light max-w-md mx-auto">
-          Six gentle wishes crafted specially for your journey ahead.
+          A few qualities you have that speak for themselves.
         </p>
       </div>
 
       {/* Responsive Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-        {BIRTHDAY_DATA.thingsIWishForYou.map((card, idx) => {
+        {BIRTHDAY_DATA.thingsIAdmire.map((card, idx) => {
           const IconComponent = iconMap[card.iconName];
           return (
             <div
@@ -87,7 +87,7 @@ export const ThingsIWish: React.FC = () => {
                 {card.title}
               </h3>
 
-              {/* Subtitle / Wish Sentence */}
+              {/* Subtitle */}
               <p className="relative text-slate-300 text-sm sm:text-base font-light leading-relaxed">
                 {card.subtitle}
               </p>

@@ -3,18 +3,19 @@ import { BirthdayIntro } from './components/Intro/BirthdayIntro';
 import { StarrySky } from './components/Background/StarrySky';
 import { CustomCursor } from './components/Cursor/CustomCursor';
 import { HeroSection } from './components/Hero/HeroSection';
-import { CinematicMessage } from './components/Message/CinematicMessage';
+import { PersonalIntro } from './components/Memory/PersonalIntro';
+import { ThingsIAdmire } from './components/Admire/ThingsIAdmire';
 import { MakeAWish } from './components/Wish/MakeAWish';
-import { ThingsIWish } from './components/WishesGrid/ThingsIWish';
 import { SurpriseEnvelope } from './components/Surprise/SurpriseEnvelope';
+import { RakshaBandhanSection } from './components/Rakhi/RakshaBandhanSection';
 import { FinalCelebration } from './components/Final/FinalCelebration';
 import { MusicPlayer } from './components/Music/MusicPlayer';
 
 export const App: React.FC = () => {
   const [hasEntered, setHasEntered] = useState<boolean>(false);
 
-  const scrollToMessage = () => {
-    const el = document.getElementById('message');
+  const scrollToMemory = () => {
+    const el = document.getElementById('memory');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
@@ -22,42 +23,45 @@ export const App: React.FC = () => {
 
   return (
     <div className="relative min-h-screen w-full bg-midnight-950 text-slate-100 font-sans selection:bg-rose-400/30 selection:text-gold-200 overflow-x-hidden">
-      {/* Intro Modal Overlay */}
+      {/* 1. Cinematic Opening Intro Modal Overlay */}
       {!hasEntered && (
         <BirthdayIntro onEnter={() => setHasEntered(true)} />
       )}
 
-      {/* Persistent Desktop Custom Cursor */}
+      {/* 2. Persistent Desktop Custom Cursor */}
       <CustomCursor />
 
-      {/* Ambient Celestial Sky Background */}
+      {/* 3. Ambient Celestial Sky Background */}
       <StarrySky />
 
-      {/* Floating Audio Controller */}
+      {/* 4. Floating Audio Controller (Music OFF / Music ON 🎵) */}
       <MusicPlayer />
 
-      {/* Main Experience Layout */}
+      {/* 5. Main Experience Continuous Story Layout */}
       <main
         className={`relative z-10 w-full flex flex-col items-center transition-opacity duration-1000 ${
           hasEntered ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >
-        {/* 1. Hero Section & Cake Centerpiece */}
-        <HeroSection onScrollNext={scrollToMessage} />
+        {/* Step 1: Birthday Hero & 28th August Focal Point + Cake */}
+        <HeroSection onScrollNext={scrollToMemory} />
 
-        {/* 2. Dedicated Cinematic Message for Namrata */}
-        <CinematicMessage />
+        {/* Step 2: Personal Memory ("Okay, something I remember..." + Ichchadhari Naagin joke) */}
+        <PersonalIntro />
 
-        {/* 3. Interactive Make a Wish Candle */}
+        {/* Step 3: Things I Admire About You (6 Genuine Qualities) */}
+        <ThingsIAdmire />
+
+        {/* Step 4: Interactive Birthday Wish Candle */}
         <MakeAWish />
 
-        {/* 4. Things I Wish For You (6 Luxury Cards) */}
-        <ThingsIWish />
-
-        {/* 5. Secret Surprise Wax-Sealed Envelope */}
+        {/* Step 5: Secret Surprise Envelope ("Wait... there's more 👀") */}
         <SurpriseEnvelope />
 
-        {/* 6. Grand Final Celebration */}
+        {/* Step 6: Raksha Bandhan Double Celebration Section */}
+        <RakshaBandhanSection />
+
+        {/* Step 7: Grand Final Message & Tanmay Signature */}
         <FinalCelebration />
       </main>
     </div>

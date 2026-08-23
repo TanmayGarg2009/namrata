@@ -1,14 +1,13 @@
 /**
- * Ambient audio engine supporting background MP3 playback on repeat with mute/unmute
- * and synthesized celestial sound effects (candle chimes, stardust sparkles).
+ * Ambient audio engine supporting optional background MP3 playback on repeat
+ * with clean Music ON / Music OFF toggle and synthesized celestial sound effects.
  */
 
 class AudioEngine {
   private ctx: AudioContext | null = null;
   private audioEl: HTMLAudioElement | null = null;
-  private isMuted: boolean = false;
-  private hasStarted: boolean = false;
-  private listeners: Set<(isMuted: boolean, isPlaying: boolean) => void> = new Set();
+  private isPlaying: boolean = false;
+  private listeners: Set<(isPlaying: boolean) => void> = new Set();
 
   constructor() {
     if (typeof window !== 'undefined') {
@@ -17,49 +16,19 @@ class AudioEngine {
       audio.preload = 'auto';
       audio.volume = 0.75;
       this.audioEl = audio;
-
-      // Attempt autoplay right away (if allowed by browser policy)
-      const tryAuto = () => {
-        audio.play().then(() => {
-          this.hasStarted = true;
-          this.notify();
-        }).catch(() => {
-          // Will start on first user interaction
-        });
-      };
-
-      tryAuto();
-
-      // Ensure audio starts on the first interaction anywhere on page
-      const startOnFirstGesture = () => {
-        if (!this.hasStarted) {
-          audio.play().then(() => {
-            this.hasStarted = true;
-            this.notify();
-          }).catch(() => {});
-        }
-        window.removeEventListener('click', startOnFirstGesture);
-        window.removeEventListener('touchstart', startOnFirstGesture);
-        window.removeEventListener('keydown', startOnFirstGesture);
-      };
-
-      window.addEventListener('click', startOnFirstGesture, { passive: true });
-      window.addEventListener('touchstart', startOnFirstGesture, { passive: true });
-      window.addEventListener('keydown', startOnFirstGesture, { passive: true });
     }
   }
 
-  public subscribe(fn: (isMuted: boolean, isPlaying: boolean) => void) {
+  public subscribe(fn: (isPlaying: boolean) => void) {
     this.listeners.add(fn);
-    fn(this.isMuted, this.hasStarted && !this.audioEl?.paused);
+    fn(this.isPlaying);
     return () => {
       this.listeners.delete(fn);
     };
   }
 
   private notify() {
-    const isPlaying = !!(this.audioEl && !this.audioEl.paused);
-    this.listeners.forEach((fn) => fn(this.isMuted, isPlaying));
+    this.listeners.forEach((fn) => fn(this.isPlaying));
   }
 
   private initContext() {
@@ -72,49 +41,32 @@ class AudioEngine {
     }
   }
 
-  // Starts or ensures playback
-  public play() {
-    if (this.audioEl) {
-      this.audioEl.muted = this.isMuted;
-      this.audioEl.play().then(() => {
-        this.hasStarted = true;
-        this.notify();
-      }).catch(() => {});
-    }
-  }
-
-  // Toggle Mute / Unmute without stopping the track
-  public toggleMute(): boolean {
+  // Toggle Music On / Off
+  public toggleMusic(): boolean {
     if (!this.audioEl) return false;
 
-    // If it hasn't started playing yet, start it
-    if (this.audioEl.paused) {
-      this.audioEl.muted = false;
-      this.isMuted = false;
+    if (this.isPlaying) {
+      this.audioEl.pause();
+      this.isPlaying = false;
+    } else {
       this.audioEl.play().then(() => {
-        this.hasStarted = true;
+        this.isPlaying = true;
         this.notify();
-      }).catch(() => {});
-      return true;
+      }).catch(() => {
+        this.isPlaying = false;
+      });
     }
 
-    this.isMuted = !this.isMuted;
-    this.audioEl.muted = this.isMuted;
     this.notify();
-    return !this.isMuted;
-  }
-
-  public getMuted(): boolean {
-    return this.isMuted;
+    return this.isPlaying;
   }
 
   public getIsPlaying(): boolean {
-    return !!(this.audioEl && !this.audioEl.paused && !this.isMuted);
+    return this.isPlaying;
   }
 
   // Play a dreamy celestial chime (for candle tap / make a wish)
   public playChime(freq: number = 587.33) {
-    if (this.isMuted) return;
     try {
       this.initContext();
       if (!this.ctx) return;
@@ -138,13 +90,12 @@ class AudioEngine {
       osc.start(now);
       osc.stop(now + 1.05);
     } catch {
-      // Ignore audio errors gracefully
+      // Ignore audio errors
     }
   }
 
   // Play a soft sparkle sound
   public playSparkle() {
-    if (this.isMuted) return;
     try {
       this.initContext();
       if (!this.ctx) return;

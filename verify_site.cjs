@@ -1,5 +1,4 @@
 const { chromium } = require('playwright');
-const fs = require('fs');
 const path = require('path');
 
 const artifactDir = 'C:\\Users\\TANMAY GARG\\.gemini\\antigravity\\brain\\d996dc81-ea20-4df7-9a29-5b5b52bf4ac3';
@@ -20,8 +19,8 @@ async function runVerification() {
 
   // 2. Wait for Enter button and click it
   console.log('Waiting for Enter button...');
-  await page.waitForSelector('text=Enter the Celebration', { timeout: 6000 });
-  await page.click('text=Enter the Celebration');
+  await page.waitForSelector('text=Enter Your Birthday', { timeout: 8000 });
+  await page.click('text=Enter Your Birthday');
   await page.waitForTimeout(1500);
 
   // 3. Capture Hero Section
@@ -34,16 +33,25 @@ async function runVerification() {
   });
   console.log('Desktop Horizontal Overflow:', isOverflowingDesktop ? 'FAIL (overflowing)' : 'PASS (no overflow)');
 
-  // 4. Test Candle Interactions
-  console.log('Testing Candle blowing...');
-  const blowBtn = await page.$('text=Blow Candles');
-  if (blowBtn) {
-    await blowBtn.click();
-    await page.waitForTimeout(600);
-    console.log('Candles blown out successfully');
-  }
+  // 4. Scroll to Personal Memory (Ichchadhari Naagin)
+  console.log('Testing Personal Memory section...');
+  await page.evaluate(() => {
+    const el = document.getElementById('memory');
+    if (el) el.scrollIntoView();
+  });
+  await page.waitForTimeout(1000);
+  await page.screenshot({ path: path.join(artifactDir, 'personal_memory.png') });
 
-  // 5. Scroll to Make a Wish & Test
+  // 5. Scroll to Things I Admire
+  console.log('Capturing Things I Admire section...');
+  await page.evaluate(() => {
+    const el = document.getElementById('admire');
+    if (el) el.scrollIntoView();
+  });
+  await page.waitForTimeout(1000);
+  await page.screenshot({ path: path.join(artifactDir, 'things_admire.png') });
+
+  // 6. Scroll to Make a Wish & Test
   console.log('Testing Make a Wish...');
   await page.evaluate(() => {
     const el = document.getElementById('wish');
@@ -53,15 +61,6 @@ async function runVerification() {
   await page.click('#wish button');
   await page.waitForTimeout(1000);
   await page.screenshot({ path: path.join(artifactDir, 'wish_section.png') });
-
-  // 6. Scroll to Wishes Grid
-  console.log('Capturing Wishes Grid...');
-  await page.evaluate(() => {
-    const el = document.getElementById('wishes-grid');
-    if (el) el.scrollIntoView();
-  });
-  await page.waitForTimeout(800);
-  await page.screenshot({ path: path.join(artifactDir, 'wishes_grid.png') });
 
   // 7. Scroll to Surprise Envelope & Open
   console.log('Testing Envelope unboxing...');
@@ -74,16 +73,25 @@ async function runVerification() {
   await page.waitForTimeout(1000);
   await page.screenshot({ path: path.join(artifactDir, 'envelope_opened.png') });
 
-  // 8. Scroll to Final Section
+  // 8. Scroll to Raksha Bandhan Section
+  console.log('Capturing Raksha Bandhan section...');
+  await page.evaluate(() => {
+    const el = document.getElementById('rakhi');
+    if (el) el.scrollIntoView();
+  });
+  await page.waitForTimeout(1000);
+  await page.screenshot({ path: path.join(artifactDir, 'raksha_bandhan.png') });
+
+  // 9. Scroll to Final Section
   console.log('Capturing Final Section...');
   await page.evaluate(() => {
     const el = document.getElementById('final');
     if (el) el.scrollIntoView();
   });
-  await page.waitForTimeout(800);
+  await page.waitForTimeout(1000);
   await page.screenshot({ path: path.join(artifactDir, 'final_celebration.png') });
 
-  // 9. Mobile Responsive Tests (iPhone 375px & Small 320px)
+  // 10. Mobile Responsive Tests (iPhone 375px & Small 320px)
   console.log('Testing Mobile Viewport 375x667...');
   await page.setViewportSize({ width: 375, height: 667 });
   await page.evaluate(() => window.scrollTo(0, 0));

@@ -49,13 +49,13 @@ export const BIRTHDAY_DATA = {
   ],
 
   personalMemory: {
-    badge: "A GENUINE SIBLING MEMORY",
+    badge: "A FUN MEMORY",
     sectionTitle: "Okay, something I remember...",
     jokeSetup: "The first time I saw you, I genuinely thought you were an",
     jokeHighlight: "Ichchadhari Naagin 🐍",
     jokeReaction: "Ehmm... yeah.",
     jokeAdmit: "Maybe I was slightly wrong about that.",
-    transition: "Growing up together, there are so many funny, chaotic, and memorable moments. But honestly, there's a lot about you that I genuinely admire."
+    transition: "From all the chaotic moments, classes, and random conversations, there's honestly a lot about you that I genuinely admire."
   },
 
   thingsIAdmire: [
